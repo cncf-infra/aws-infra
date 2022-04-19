@@ -1,0 +1,12 @@
+#+TITLE: IAM for CNCF
+
+* initialising
+
+#+begin_src shell
+aws s3 mb s3://cncf-io-iam-tfstate --region ap-southeast-2
+#+end_src
+
+#+RESULTS:
+#+begin_example
+make_bucket: cncf-io-iam-tfstate
+#+end_example

@@ -1,0 +1,5 @@
+#+TITLE: AWS infra
+
+* Structure
+
+- terraform/ :: contains various terraform folders for provisioning different resources

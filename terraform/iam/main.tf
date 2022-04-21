@@ -8,7 +8,7 @@ resource "aws_iam_role" "registry-k8s-io-s3writer" {
         Action = "sts:AssumeRole"
         Effect = "Allow"
         Principal = {
-          AWS = "arn:aws:iam::768319786644:root"
+          AWS = "513428760722"
         }
       },
     ]
@@ -33,7 +33,7 @@ resource "aws_iam_role_policy" "registry-k8s-io-s3writer-policy" {
           "s3-object-lambda:*"
         ]
         Effect   = "Allow"
-        Resource = "arn:aws:s3::266690972299:*"
+        Resource = "*"
       },
     ]
   })

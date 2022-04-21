@@ -33,7 +33,7 @@ resource "aws_iam_role_policy" "registry-k8s-io-s3writer-policy" {
           "s3-object-lambda:*"
         ]
         Effect   = "Allow"
-        Resource = "*"
+        Resource = "arn:aws:s3::266690972299:*"
       },
     ]
   })

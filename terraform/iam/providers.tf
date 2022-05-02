@@ -16,3 +16,16 @@ terraform {
 provider "aws" {
   region = "us-west-1"
 }
+
+provider "aws" {
+  alias = "registry-k8s-io"
+
+  region = "us-west-1"
+
+  # Jay, Hippie and Caleb are cool
+  assume_role {
+    # deleting this role causes bad things. You just really don't want this. Count this as a WARNING!
+    # also! the account (513428760722) is CNCF/Kubernetes/registry.k8s.io/registry.k8s.io_admin / k8s-infra-aws-registry-k8s-io-admin@kubernetes.io
+    role_arn = "arn:aws:iam::513428760722:role/OrganizationAccountAccessRole"
+  }
+}

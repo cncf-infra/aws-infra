@@ -1,6 +1,7 @@
 resource "aws_iam_role" "registry-k8s-io-s3writer" {
-  name = "registry.k8s.io_s3writer"
+  provider = aws.registry-k8s-io
 
+  name = "registry.k8s.io_s3writer"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -8,7 +9,7 @@ resource "aws_iam_role" "registry-k8s-io-s3writer" {
         Action = "sts:AssumeRole"
         Effect = "Allow"
         Principal = {
-          AWS = "513428760722"
+          AWS = "768319786644"
         }
       },
     ]
@@ -19,8 +20,9 @@ resource "aws_iam_role" "registry-k8s-io-s3writer" {
   }
 }
 
-
 resource "aws_iam_role_policy" "registry-k8s-io-s3writer-policy" {
+  provider = aws.registry-k8s-io
+
   name = "registry.k8s.io_s3writer_policy"
   role = aws_iam_role.registry-k8s-io-s3writer.id
 

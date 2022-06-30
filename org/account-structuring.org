@@ -1,0 +1,44 @@
+#+TITLE: Account Structuring
+
+* Purpose
+This document is set out the clearly define the way of provisioning accounts and access for CNCF projects on AWS donated infra, such as the requests in the [[https://github.com/cncf/credits][cncf/credits]] repo.
+
+* Layout
+#+html: <img width=1500 style='margin-left: auto; margin-right: auto;' alt='Account structure' src='./account-structure.svg'>
+
+** Build the diagraph :noexport:
+#+begin_src dot :file ./account-structure.svg :results silent
+digraph AccountStructure {
+    label="CNCF AWS project account structure"
+    labelloc="t"
+    graph[compound=true]
+
+    subgraph cluster0 {
+        label="CNCF root Org"
+
+        subgraph cluster0_0 {
+            label="[PROJECT] Org Unit"
+
+            subgraph cluster0_0_0 {
+                label="[PROJECT] Account"
+
+                subgraph cluster0_0_0_0 {
+                    label="IAM users and roles"
+
+                    IAMUser [label="IAM User" style=dashed]
+                }
+                Resources [label="Account resources" style=dashed]
+            }
+        }
+    }
+
+    IAMUser -> Resources
+}
+#+end_src
+
+* Access
+Using the /OrganizationAccountAccessRole/ IAM role inside of the freshly provisioned accounts, with Switch Role, the IAM accounts can be provisioned for access.
+
+* Authorization considerations
+
+- restrictions :: what roles/permissions should be granted on which accounts? limited resource access?

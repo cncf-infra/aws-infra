@@ -31,8 +31,8 @@ resource "aws_iam_role_policy" "registry-k8s-io-s3writer-policy" {
     Statement = [
       {
         Action = [
-          "s3:*",
-          "s3-object-lambda:*"
+          "s3:*Object",
+          "s3:ListBucket"
         ]
         Effect   = "Allow"
         Resource = "*"

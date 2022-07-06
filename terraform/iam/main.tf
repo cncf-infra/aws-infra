@@ -40,6 +40,7 @@ resource "aws_iam_role_policy" "registry-k8s-io-s3writer-policy" {
     Statement = [
       {
         Action = [
+          "s3:ListAllMyBuckets",
           "s3:*Object",
           "s3:ListBucket"
         ]

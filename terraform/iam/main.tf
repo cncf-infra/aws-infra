@@ -22,6 +22,8 @@ resource "aws_iam_role" "registry-k8s-io-s3writer" {
     ]
   })
 
+  max_session_duration = 43200
+
   tags = {
     project = "registry.k8s.io"
   }

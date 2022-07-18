@@ -111,3 +111,40 @@ resource "aws_iam_role_policy" "registry-k8s-io-s3admin-policy" {
     ]
   })
 }
+
+resource "aws_iam_policy" "sts-allow-registry-k8s-io-s3writer" {
+  provider = aws.k8s-infra-accounts
+
+  name = "sts-allow-registry-k8s-io-s3writer"
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Sid" : "CallSTSAssumeRole",
+        "Effect" : "Allow",
+        "Action" : "sts:AssumeRole",
+        "Resource" : "arn:aws:iam::513428760722:role/registry.k8s.io_s3writer"
+      },
+      {
+        "Sid" : "GetTokens",
+        "Effect" : "Allow",
+        "Action" : [
+          "sts:GetSessionToken",
+          "sts:GetAccessKeyInfo",
+          "sts:GetCallerIdentity",
+          "sts:GetServiceBearerToken"
+        ],
+        "Resource" : "*"
+      }
+    ]
+  })
+}
+resource "aws_iam_user" "registry-k8s-io-ci" {
+  provider = aws.k8s-infra-accounts
+  name     = "registry.k8s.io-ci"
+}
+resource "aws_iam_user_policy_attachment" "sts-allow-registry-k8s-io-s3writer" {
+  provider   = aws.k8s-infra-accounts
+  user       = aws_iam_user.registry-k8s-io-ci.name
+  policy_arn = aws_iam_policy.sts-allow-registry-k8s-io-s3writer.arn
+}

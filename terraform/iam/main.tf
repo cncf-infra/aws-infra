@@ -68,13 +68,6 @@ resource "aws_iam_role" "registry-k8s-io-s3admin" {
         }
       },
       {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Principal = {
-          AWS = "arn:aws:iam::585803375430:user/registry.k8s.io-ci"
-        }
-      },
-      {
         Action = "sts:AssumeRole",
         Effect = "Allow",
         Principal = {

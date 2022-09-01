@@ -155,6 +155,8 @@ resource "aws_iam_user_policy_attachment" "sts-allow-registry-k8s-io-s3writer" {
 }
 
 resource "aws_iam_openid_connect_provider" "k8s-infra-trusted-cluster" {
+  provider = aws.registry-k8s-io
+
   url             = "https://container.googleapis.com/v1/projects/k8s-infra-prow-build-trusted/locations/us-central1/clusters/prow-build-trusted"
   client_id_list  = ["sts.amazonaws.com"]
   thumbprint_list = ["08745487e891c19e3078c1f2a07e452950ef36f6"]

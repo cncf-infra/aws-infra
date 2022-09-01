@@ -20,6 +20,18 @@ resource "aws_iam_role" "registry-k8s-io-s3writer" {
           AWS = "arn:aws:iam::585803375430:user/registry.k8s.io-ci"
         }
       },
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Federated" : aws_iam_openid_connect_provider.k8s-infra-trusted-cluster.arn
+        },
+        "Action" : "sts:AssumeRoleWithWebIdentity",
+        "Condition" : {
+          "StringEquals" : {
+            "container.googleapis.com/v1/projects/k8s-infra-prow-build-trusted/locations/us-central1/clusters/prow-build-trusted:sub" : "system:serviceaccount:test-pods:s3-sync"
+          }
+        }
+      }
     ]
   })
 
@@ -140,4 +152,10 @@ resource "aws_iam_user_policy_attachment" "sts-allow-registry-k8s-io-s3writer" {
   provider   = aws.k8s-infra-accounts
   user       = aws_iam_user.registry-k8s-io-ci.name
   policy_arn = aws_iam_policy.sts-allow-registry-k8s-io-s3writer.arn
+}
+
+resource "aws_iam_openid_connect_provider" "k8s-infra-trusted-cluster" {
+  url             = "https://container.googleapis.com/v1/projects/k8s-infra-prow-build-trusted/locations/us-central1/clusters/prow-build-trusted"
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = ["08745487e891c19e3078c1f2a07e452950ef36f6"]
 }

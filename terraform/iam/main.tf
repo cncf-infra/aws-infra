@@ -17,6 +17,20 @@ resource "aws_iam_role" "registry-k8s-io-s3writer" {
         Action = "sts:AssumeRole"
         Effect = "Allow"
         Principal = {
+          Service = "s3.amazonaws.com"
+        }
+      },
+      {
+        Action = "sts:AssumeRole",
+        Effect = "Allow",
+        Principal = {
+          Service = "batchoperations.s3.amazonaws.com"
+        },
+      },
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
           AWS = "arn:aws:iam::585803375430:user/registry.k8s.io-ci"
         }
       },

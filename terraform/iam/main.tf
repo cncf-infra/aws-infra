@@ -74,6 +74,7 @@ resource "aws_iam_role_policy" "registry-k8s-io-s3writer-policy" {
           "s3:GetReplicationConfiguration",
           "s3:ListAllMyBuckets",
           "s3:ListBucket",
+          "s3:PutReplicationConfiguration",
           "s3:ReplicateObject",
           "s3:ReplicateTags"
         ]

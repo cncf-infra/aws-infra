@@ -182,3 +182,59 @@ resource "aws_iam_openid_connect_provider" "k8s-infra-trusted-cluster" {
   client_id_list  = ["sts.amazonaws.com"]
   thumbprint_list = ["08745487e891c19e3078c1f2a07e452950ef36f6"]
 }
+
+resource "aws_iam_user" "verify-conformance-ci" {
+  provider = aws.apisnoop
+  name     = "verify-conformance-ci"
+}
+
+resource "aws_iam_role" "verify-conformance-ci" {
+  provider = aws.apisnoop
+
+  name = "verify-conformance-ci"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::928655657136:user/verify-conformance-ci"
+        }
+      },
+    ]
+  })
+
+  max_session_duration = 3600
+
+  tags = {
+    project = "registry.k8s.io"
+  }
+}
+
+resource "aws_iam_role_policy" "verify-conformance-ci-policy" {
+  provider = aws.apisnoop
+
+  name = "verify-conformance-ci_policy"
+  role = aws_iam_role.verify-conformance-ci.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "eks:DescribeCluster"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:eks:ap-southeast-2:928655657136:cluster/prow-cncf-io-eks"
+      },
+      {
+        Action = [
+          "eks:ListClusters"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:eks:ap-southeast-2:928655657136:cluster/*"
+      },
+    ]
+  })
+}

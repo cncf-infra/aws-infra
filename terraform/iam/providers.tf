@@ -41,3 +41,15 @@ provider "aws" {
     role_arn = "arn:aws:iam::585803375430:role/OrganizationAccountAccessRole"
   }
 }
+
+provider "aws" {
+  alias = "apisnoop"
+
+  region = "us-west-1"
+
+  assume_role {
+    # deleting this role causes bad things. You just really don't want this. Count this as a WARNING!
+    # also! the account (928655657136) is CNCF/APISnoop / cncf-aws-admins@lists.cncf.io
+    role_arn = "arn:aws:iam::928655657136:role/OrganizationAccountAccessRole"
+  }
+}

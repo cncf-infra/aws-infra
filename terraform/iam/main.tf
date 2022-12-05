@@ -183,6 +183,14 @@ resource "aws_iam_openid_connect_provider" "k8s-infra-trusted-cluster" {
   thumbprint_list = ["08745487e891c19e3078c1f2a07e452950ef36f6"]
 }
 
+resource "aws_iam_openid_connect_provider" "github" {
+  provider = aws.apisnoop
+
+  url             = "https://token.actions.githubusercontent.com"
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = ["6938fd4d98bab03faadb97b34396831e3780aea1"]
+}
+
 resource "aws_iam_user" "verify-conformance-ci" {
   provider = aws.apisnoop
   name     = "verify-conformance-ci"
@@ -202,6 +210,28 @@ resource "aws_iam_role" "verify-conformance-ci" {
           AWS = "arn:aws:iam::928655657136:user/verify-conformance-ci"
         }
       },
+      {
+        Action = "sts:TagSession"
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::928655657136:user/verify-conformance-ci"
+        }
+      },
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Federated" : "arn:aws:iam::928655657136:oidc-provider/token.actions.githubusercontent.com"
+        },
+        "Action" : "sts:AssumeRoleWithWebIdentity",
+        "Condition" : {
+          "StringLike" : {
+            "token.actions.githubusercontent.com:sub" : "repo:cncf-infra/verify-conformance:*"
+          },
+          "StringEquals" : {
+            "token.actions.githubusercontent.com:aud" : "sts.amazonaws.com"
+          }
+        }
+      }
     ]
   })
 
@@ -223,7 +253,8 @@ resource "aws_iam_role_policy" "verify-conformance-ci-policy" {
     Statement = [
       {
         Action = [
-          "eks:DescribeCluster"
+          "eks:DescribeCluster",
+          "eks:AccessKubernetesApi"
         ]
         Effect   = "Allow"
         Resource = "arn:aws:eks:ap-southeast-2:928655657136:cluster/prow-cncf-io-eks"

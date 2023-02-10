@@ -149,7 +149,7 @@ resource "aws_iam_policy" "sts-allow-artifacts-k8s-io-s3writer" {
         "Sid" : "CallSTSAssumeRole",
         "Effect" : "Allow",
         "Action" : "sts:AssumeRole",
-        "Resource" : "arn:aws:iam::513428760722:role/artifacts.k8s.io_s3writer"
+        "Resource" : "arn:aws:iam::354561287328:role/artifacts.k8s.io_s3writer"
       },
       {
         "Sid" : "GetTokens",

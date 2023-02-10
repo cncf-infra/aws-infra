@@ -1,4 +1,4 @@
-// s3writer for content management
+// s3writer for artifacts management
 resource "aws_iam_role" "artifacts-k8s-io-s3writer" {
   provider = aws.artifacts-k8s-io
 
@@ -42,7 +42,7 @@ resource "aws_iam_role" "artifacts-k8s-io-s3writer" {
         "Action" : "sts:AssumeRoleWithWebIdentity",
         "Condition" : {
           "StringEquals" : {
-            "container.googleapis.com/v1/projects/k8s-infra-prow-build-trusted/locations/us-central1/clusters/prow-build-trusted:sub" : "system:serviceaccount:test-pods:s3-sync"
+            "container.googleapis.com/v1/projects/k8s-infra-prow-build-trusted/locations/us-central1/clusters/prow-build-trusted:sub" : "system:serviceaccount:test-pods:k8s-infra-promoter"
           }
         }
       }

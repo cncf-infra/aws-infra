@@ -31,6 +31,19 @@ provider "aws" {
 }
 
 provider "aws" {
+  alias = "artifacts-k8s-io"
+
+  region = "us-west-1"
+
+  # Jay, Hippie and Caleb are cool
+  assume_role {
+    # deleting this role causes bad things. You just really don't want this. Count this as a WARNING!
+    # also! the account (354561287328) is CNCF/Kubernetes/artifacts.k8s.io/artifacts.k8s.io_admin / k8s-infra-aws-registry-k8s-io-admin@kubernetes.io
+    role_arn = "arn:aws:iam::354561287328:role/OrganizationAccountAccessRole"
+  }
+}
+
+provider "aws" {
   alias = "k8s-infra-accounts"
 
   region = "us-west-1"
